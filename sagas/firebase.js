@@ -5,6 +5,37 @@ import firebase from '../firebase';
 export function* workerReadOnce(action) {
 }
 
+function checkLogin() {
+  return eventChannel(emitter=> {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        emitter(user);
+      } else {
+        emitter(null);
+      }
+    };
+    return (()=>{});
+  });
+}
+
+export function* workerCheckForLogin(action) {
+    const chan = yield call(checkLogin);
+    try {    
+        while (true) {
+            // take(END) will cause the saga to terminate by jumping to the finally block
+            let user = yield take(chan);
+            if (user) {
+              yield put({type: "LOGIN_USER", payload: user});
+            } else {
+              yield put({type: "LOGOUT_USER"});
+            }
+        }
+    } finally {
+        console.log('signup terminated');
+    }
+}
+
+
 function createUser(username, password) {
   return eventChannel(emitter=> {
         firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(username,password)
@@ -60,7 +91,6 @@ export function* workerSignup(action) {
         while (true) {
             // take(END) will cause the saga to terminate by jumping to the finally block
             let credentials = yield take(chan);
-            yield put({type: "LOGIN_USER", payload: credentials});
             console.log(`signup: ${credentials}`);
         }
     } finally {
@@ -76,7 +106,6 @@ export function* workerLogin(action) {
         while (true) {
             // take(END) will cause the saga to terminate by jumping to the finally block
             let credentials = yield take(chan);
-            yield put({type: "LOGIN_USER", payload: credentials});
             console.log(`signup: ${credentials}`);
         }
     } finally {
@@ -89,6 +118,7 @@ export function* firebaseSaga() {
     yield all([
       takeEvery('READ_FIREBASE_ONCE', workerReadOnce),
       takeLatest('LOGIN', workerLogin),
-      takeLatest('SIGNUP', workerSignup)
+      takeLatest('SIGNUP', workerSignup),
+      fork(workerCheckForLogin)
     ]);
 }
