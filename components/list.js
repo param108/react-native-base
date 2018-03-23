@@ -20,7 +20,7 @@ class List extends React.Component {
   render() {
     return (
 	<View>
-	<Text>Hello I am {this.state.count} </Text>
+	<Text>Hello I am {this.state.count}</Text>
 	<Button title="Increment" onPress={this.props.increment} />
 	</View>
     );
@@ -30,7 +30,7 @@ class List extends React.Component {
 
 function select(state) {
   return {
-    count: state.counter.count
+    count: state.increment.count
   };
 }
 
@@ -40,4 +40,5 @@ function actions(dispatch) {
   };
 }
 
-module.exports=connect(select,actions)(List);
+//module.exports=connect(select,actions)(List);
+module.exports={List: connect(select,actions)(List)};
