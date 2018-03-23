@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import { List } from './components';
+import { Login, Wait } from './components';
 import {Provider} from 'react-redux';
 import {store} from './store';
-import * as firebase from 'firebase';
+import * as firebase from './firebase';
 
 export default class App extends React.Component {
 
@@ -13,11 +13,12 @@ export default class App extends React.Component {
   
   render() {  
     return (
-	<Provider store={store}>
-	<View style={styles.container}>
-	<List/>
-	</View>
-	</Provider>
+	          <Provider store={store}>
+            <Wait/>
+	          <View style={styles.container}>
+	          <Login/>
+	          </View>
+	          </Provider>
     );
   }
 }
