@@ -21,9 +21,12 @@ class Wait extends React.Component {
         if (this.state.visible) {
             return (
                 	  <View style={styles.wait_screen}>
-	                  <Text>Waiting...</Text>
+                    <View style={styles.wait_body}>
+	                  <Text style={styles.titleText}>Waiting...</Text>
+                    </View>
 	                  </View>
             );
+
         } else {
             return null;
         };
@@ -32,14 +35,24 @@ class Wait extends React.Component {
 
 const styles = StyleSheet.create({
     wait_screen: {
+        elevation:100,
+        backgroundColor: 'grey',
+        opacity: 0.95,
+        bottom: 0,
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0
+    },
+    wait_body: {
+        flexGrow: 1,
+        justifyContent: 'center'
     },
     titleText: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 });
 

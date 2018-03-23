@@ -11,8 +11,7 @@ const store = createStore(reducers, {}, compose(
   applyMiddleware(thunk),
   applyMiddleware(sagaMiddleware)
 ));
-
-
+sagaMiddleware.run(rootSaga);
 
 module.exports = {store};
 

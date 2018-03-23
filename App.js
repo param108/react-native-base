@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import { Login, Wait } from './components';
 import {Provider} from 'react-redux';
+import {View} from 'react-native';
 import {store} from './store';
 import * as firebase from './firebase';
 
@@ -10,24 +10,17 @@ export default class App extends React.Component {
   constructor() {
     super();
   }
-  
-  render() {  
+
+  render() {
     return (
 	          <Provider store={store}>
-            <Wait/>
-	          <View style={styles.container}>
+            <View style={{flex:1}}>
 	          <Login/>
-	          </View>
+            <Wait/>
+            </View>
 	          </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
